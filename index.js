@@ -1,8 +1,11 @@
 const express=require('express');
 const http=require('http');
 const morgan=require('morgan');
-const hostname='localhost';
 const port='3000';
+
+
+const dishRouter=require('./routes/dishRouter');
+const hostname='localhost';
 const bodyParser=require('body-parser');
 
 
@@ -10,6 +13,7 @@ const app=express();
 app.use(morgan('dev'));//logs traffic 
 app.use(bodyParser.json);//allows us to parse req message added to req as req.body
 //dishes is end point
+app.use('/dishes',dishRouter);
 app.all('/dishes',(req,res,next)=>
 //all CRUD requests this code executes first
     {
@@ -19,23 +23,6 @@ app.all('/dishes',(req,res,next)=>
     }
 );
 //req and res are passed from above
-get.get('/dishes',(req,res,next)=>
-{
-    res.end('Will send all the dishes to you!');
-});
-//new
-app.post('/dishes',(req,res,next)=>{
-    res.end('Will add the dish: '+ req.body.name+
-    'with details: '+req.body.description)//post body contains a name property
-});//we get the body info from bodyParser
-
-app.put('/dishes',(req,res,next)=>{
-    res.statusCode=403;
-    res.end('PUT not supported on /dishes');
-});
-app.delete('/dishes',(req,res,next)=>{
-    res.end('Deleting all the dishes!');
-});
 //:dishId is a param
 app.get('/dishes/:dishId',(req,res,next)=>
 {
