@@ -3,16 +3,24 @@ const http=require('http');
 const morgan=require('morgan');
 const port='3000';
 
-
+const promotionRouter=require('./routes/promotionRouter');
+const leadersRouter=require('./routes/leadersRouter');
 const dishRouter=require('./routes/dishRouter');
 const hostname='localhost';
 const bodyParser=require('body-parser');
+
+
+
+
+
 
 
 const app=express();
 app.use(morgan('dev'));//logs traffic 
 app.use(bodyParser.json);//allows us to parse req message added to req as req.body
 //dishes is end point
+app.use('/promotions'.promotionRouter);
+app.use('/leaders',leadersRouter);
 app.use('/dishes',dishRouter);
 app.all('/dishes',(req,res,next)=>
 //all CRUD requests this code executes first
